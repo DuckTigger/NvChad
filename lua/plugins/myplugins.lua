@@ -11,17 +11,31 @@ local plugins = {
 
   -- Override plugin definition options
   {
+		"mfussenegger/nvim-lint",
+		event = {
+			"BufReadPre",
+			"BufNewFile",
+		},
+		config = function()
+			require("configs.lint").setup()
+		end,
+	},
+  {
     "neovim/nvim-lspconfig",
-    dependencies = {
-      -- format & linting
-      {
-        "mfussenegger/nvim-lint",
-      },
-    },
+    event = { "BufReadPre", "BufNewFile" },
     config = function()
       require "nvchad.configs.lspconfig"
       require "configs.lspconfig"
     end, -- Override to setup mason-lspconfig
+  },
+  {
+    "nvimtools/none-ls.nvim",
+    -- event = "VeryLazy",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      local none_ls = require("none-ls")
+      none_ls.setup(require("configs.none-ls"))
+    end,
   },
 
   -- override plugin configs
