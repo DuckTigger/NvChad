@@ -31,11 +31,11 @@ function M.setup(opts)
     
     vim.filetype.add({ extension = { stim = "stim" } })
     
-    if opts.auto_install then
-        vim.defer_fn(function()
-            pcall(vim.cmd, "TSInstallSync stim")
-        end, 100)
-    end
+    -- if opts.auto_install then
+    --     vim.defer_fn(function()
+    --         pcall(vim.cmd, "TSInstallSync stim")
+    --     end, 100)
+    -- end
     
     if opts.highlight_measurements then
         require('stim-treesitter').setup()
