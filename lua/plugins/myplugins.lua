@@ -139,10 +139,24 @@ local plugins = {
       vim.g.vimtex_quickfix_method = vim.fn.executable "pplatex" == 1 and "pplatex" or "latexlog"
       vim.g.tex_flavor = "luatex"
       vim.g.vimtex_quickfix_mode = 0
-      vim.g.Tex_MultipleCompileFormats = "pdf,bib,pdf"
+      vim.g.vimtex_compiler_latexmk = { out_dir = "build" }
       vim.g.vimtex_view_general_viewer = "zathura"
       vim.g.vimtex_viewer_zathura = 1
-      vim.g.vimtex_compiler_latexmk = { out_dir = "build" }
+      vim.g.vimtex_compiler_method = "latexmk"
+      vim.g.vimtex_compiler_latexmk_engines = {
+        _ = '-lualatex'
+      }
+      vim.g.vimtex_compiler_latexmk = {
+        build_dir = "build",
+        aux_dir = "build",
+        out_dir = "build",
+        options = {
+          "-verbose",
+          "-file-line-error",
+          "-synctex=1",
+          "-interaction=nonstopmode",
+        },
+      }
     end,
   },
 

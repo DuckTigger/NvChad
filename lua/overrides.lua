@@ -7,19 +7,6 @@ local has_words_before = function()
 end
 local cmp = require("cmp")
 
-M.nvimtree = {
-  git = {
-    enable = true,
-  },
-  renderer = {
-    highlight_git = true,
-    icons = {
-      show = {
-        git = true,
-      },
-    },
-  },
-}
 M.cmp = {
 
   mapping = {
@@ -35,10 +22,10 @@ M.cmp = {
       -- },
       ["<Tab>"] = cmp.mapping(function(fallback)
         if cmp.visible() then
-          cmp.mapping.confirm {
+          cmp.confirm {
             behavior = cmp.ConfirmBehavior.Insert,
             select = true,
-      }
+          }
         elseif require("luasnip").expand_or_jumpable() then
           vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
         elseif has_words_before() then

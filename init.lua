@@ -36,4 +36,3 @@ vim.schedule(function()
   require "mappings"
 end)
 require 'myinit'
-require("stim-treesitter-config").setup()
