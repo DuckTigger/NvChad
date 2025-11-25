@@ -27,7 +27,7 @@ map("n", "<leader>at",  ":CopilotChatTests<CR>", {desc = "CopilotChat - Generate
 map("n", "<leader>af",  ":CopilotChatFix<CR>", {desc = "CopilotChat - Fix code" })
 map("n", "<leader>ar",  ":CopilotChatReview<CR>", {desc = "CopilotChat - Review code" })
 map("n", "<leader>aw",  ":CopilotChatToggle<CR>", {desc = "CopilotChat - Toggle Window" })
-map("n", "<leader>aq", 
+map("n", "<leader>aq",
   function()
     local input = vim.fn.input "Quick Chat: "
     if input ~= "" then
@@ -37,6 +37,49 @@ map("n", "<leader>aq",
     end
   end,
   {desc = "CopilotChat - Quick chat"})
+
+-- Molten/Quarto (Jupyter) - context-aware keybindings
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "python", "markdown" },
+  callback = function()
+    local buf = vim.api.nvim_get_current_buf()
+
+    -- Use Ctrl-Enter for running cells (works in both Python and Markdown notebooks)
+    vim.keymap.set("n", "<C-CR>", function()
+      -- Use QuartoSend if available (for markdown), otherwise MoltenEvaluateLine
+      local has_quarto = pcall(require, "quarto")
+      if has_quarto and vim.bo.filetype == "markdown" then
+        require("quarto.runner").run_cell()
+      else
+        vim.cmd("MoltenEvaluateLine")
+      end
+    end, {desc = "Run cell", buffer = buf, silent = true})
+
+    vim.keymap.set("v", "<C-CR>", function()
+      local has_quarto = pcall(require, "quarto")
+      if has_quarto and vim.bo.filetype == "markdown" then
+        require("quarto.runner").run_range()
+      else
+        vim.cmd("MoltenEvaluateVisual")
+      end
+    end, {desc = "Run selection", buffer = buf, silent = true})
+
+    -- Molten-specific keybindings (use localleader to avoid conflicts)
+    vim.keymap.set("n", "<localleader>mi", ":MoltenInit<CR>", {desc = "Initialize kernel", buffer = buf, silent = true})
+    vim.keymap.set("n", "<localleader>e", ":MoltenEvaluateOperator<CR>", {desc = "Evaluate operator", buffer = buf, silent = true})
+    vim.keymap.set("n", "<localleader>rr", ":MoltenReevaluateCell<CR>", {desc = "Re-evaluate cell", buffer = buf, silent = true})
+    vim.keymap.set("n", "<localleader>rd", ":MoltenDelete<CR>", {desc = "Delete cell", buffer = buf, silent = true})
+    vim.keymap.set("n", "<localleader>oh", ":MoltenHideOutput<CR>", {desc = "Hide output", buffer = buf, silent = true})
+    vim.keymap.set("n", "<localleader>os", ":noautocmd MoltenEnterOutput<CR>", {desc = "Open output window", buffer = buf, silent = true})
+    vim.keymap.set("v", "<localleader>r", ":<C-u>MoltenEvaluateVisual<CR>gv", {desc = "Execute visual selection", buffer = buf, silent = true})
+
+    -- Quarto navigation (only in markdown)
+    if vim.bo.filetype == "markdown" then
+      vim.keymap.set("n", "]c", function() require("quarto.runner").run_cell() end, {desc = "Run cell and move next", buffer = buf, silent = true})
+      vim.keymap.set("n", "[c", function() require("quarto.runner").run_above() end, {desc = "Run cell above", buffer = buf, silent = true})
+    end
+  end,
+})
 
 -- Visual mode
 

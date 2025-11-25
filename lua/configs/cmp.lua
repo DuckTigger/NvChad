@@ -19,7 +19,7 @@ local options = {
     -- },
     ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
-        cmp.mapping.confirm {
+        cmp.confirm {
           behavior = cmp.ConfirmBehavior.Insert,
           select = true,
         }

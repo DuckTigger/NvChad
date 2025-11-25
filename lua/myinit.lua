@@ -75,3 +75,12 @@ local stim_treesitter_module = loadfile('/Users/andrewpatterson/stim-tresitter/s
 
 -- Optional: Set up keybindings
 vim.keymap.set('n', '<leader>si', ':StimInfoTS<CR>', { desc = 'Stim: Show measurement info' })
+
+-- Notebook utilities
+vim.api.nvim_create_user_command("NewNotebook", function(opts)
+  require("configs.notebook").new_notebook(opts.args)
+end, {
+  nargs = "?",
+  complete = "file",
+  desc = "Create a new Jupyter notebook (markdown format)",
+})
