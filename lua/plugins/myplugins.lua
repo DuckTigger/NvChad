@@ -288,7 +288,48 @@ local plugins = {
     config = function()
       vim.g.copilot_no_tab_map = true
       vim.g.copilot_assume_mapped = true
+      vim.api.nvim_set_keymap("i", "<C-J>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
     end,
+  },
+  {
+    "yetone/avante.nvim",
+    event = "VeryLazy",
+    version = false,
+    build = "make",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      "nvim-tree/nvim-web-devicons",
+      "nvim-tree/nvim-tree.lua",
+      "github/copilot.vim",
+    },
+    opts = {
+      provider = "copilot",
+      providers = {
+        copilot = {
+          endpoint = "https://api.githubcopilot.com",
+          model = "gpt-4o-2024-05-13",
+          timeout = 30000,
+          temperature = 0,
+          extra_request_body = {
+            max_tokens = 4096,
+          },
+        },
+      },
+      behaviour = {
+        support_paste_from_clipboard = true,
+      },
+      windows = {
+        sidebar_header = {
+          enabled = true,
+        },
+      },
+      mappings = {
+        files = {
+          enabled = true,
+        },
+      },
+    },
   },
   {
     "CopilotC-Nvim/CopilotChat.nvim",
@@ -312,6 +353,25 @@ local plugins = {
         auto_insert_mode = true, -- Enter insert mode when opening
       },
     },
+  },
+  {
+    "ravitemer/mcphub.nvim",
+    lazy = false,
+    dependencies = {
+      "CopilotC-Nvim/CopilotChat.nvim",
+    },
+    config = function()
+      require("mcphub").setup({
+        extensions = {
+          copilotchat = {
+            enabled = true,
+            convert_tools_to_functions = true,
+            convert_resources_to_functions = true,
+            add_mcp_prefix = false,
+          },
+        },
+      })
+    end,
   },
 
   {
