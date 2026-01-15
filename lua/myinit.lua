@@ -1,6 +1,65 @@
 vim.opt.spelllang = "en_gb"
 vim.opt.spell = true
 
+-- Suppress network connectivity errors from Copilot/GitHub API
+-- This filters out DNS resolution failures and connection timeouts
+-- while still showing other important errors
+local original_notify = vim.notify
+vim.notify = function(msg, level, opts)
+  -- Patterns to ignore (network-related errors)
+  local ignore_patterns = {
+    "Could not resolve host",
+    "curl error exit_code=6",
+    "curl error exit_code=7",  -- Failed to connect
+    "curl error exit_code=28", -- Timeout
+    "api%.github%.com",
+    "api%.githubcopilot%.com",
+    "cannot resume dead coroutine", -- Consequence of network errors
+  }
+
+  -- Check if message matches any ignore pattern
+  for _, pattern in ipairs(ignore_patterns) do
+    if msg and type(msg) == "string" and msg:match(pattern) then
+      -- Silently ignore this error
+      return
+    end
+  end
+
+  -- For all other messages, use original notify
+  original_notify(msg, level, opts)
+end
+
+-- Also suppress error display for network-related callback failures
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "*",
+  callback = function()
+    -- Override error display to filter network errors
+    local original_errmsg = vim.api.nvim_err_writeln
+    vim.api.nvim_err_writeln = function(msg)
+      -- Check if this is a network-related error
+      if msg and type(msg) == "string" then
+        local network_error_patterns = {
+          "Could not resolve host",
+          "curl error exit_code=[678]",
+          "curl error exit_code=28",
+          "api%.github",
+          "cannot resume dead coroutine",
+        }
+
+        for _, pattern in ipairs(network_error_patterns) do
+          if msg:match(pattern) then
+            return -- Silently ignore
+          end
+        end
+      end
+
+      -- Show all other errors
+      original_errmsg(msg)
+    end
+  end,
+  once = true,
+})
+
 local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
 
 parser_config.stim = {
