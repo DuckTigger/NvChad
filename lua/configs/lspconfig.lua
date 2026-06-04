@@ -70,10 +70,14 @@ local capabilities = require("nvchad.configs.lspconfig").capabilities
 --   end,
 -- })
 --
--- wrap NVChad’s on_attach to remove that default <leader>ra binding
+-- wrap NVChad's on_attach to remove that default <leader>ra binding
 local on_attach = function(client, bufnr)
   nv_on_attach(client, bufnr)
   -- vim.keymap.del("n", "<leader>ra", { buffer = bufnr })
+
+  -- Add missing LSP keybindings
+  vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = bufnr, desc = "LSP Go to references" })
+  vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = bufnr, desc = "LSP Go to implementation" })
 
   -- Enable inlay hints if supported
   if client.supports_method("textDocument/inlayHint") then
