@@ -13,18 +13,8 @@ M.treesitter = {
     "markdown",
     "markdown_inline",
   },
-  highlight = {
-    enable = true,
-    disable = function(lang, buf)
-      return lang == "python"
-    end,
-  },
   indent = {
     enable = true,
-    disable = { "python" },
-  },
-  incremental_selection = {
-    disable = { "python" },
   },
 }
 
