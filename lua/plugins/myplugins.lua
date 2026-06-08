@@ -448,6 +448,18 @@ local plugins = {
       force_ft = "markdown",
     },
   },
+  {
+    "DuckTigger/stim-treesitter-parser",
+    event = "VeryLazy",   -- ensure it loads at startup so :TSInstall stim works
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    config = function()
+      require("stim-treesitter-config").setup({
+        -- defaults shown:
+        highlight_measurements = true,
+        keymaps = { show_info = "<leader>si" },
+      })
+    end,
+  },
 
   -- To make a plugin not be loaded
   -- {

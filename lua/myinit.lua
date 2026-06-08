@@ -60,33 +60,33 @@ vim.api.nvim_create_autocmd("FileType", {
   once = true,
 })
 
-local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
-
-parser_config.stim = {
-  install_info = {
-    url = "/Users/andrewpatterson/stim-tresitter/", -- Local path to this repository
-    files = {"src/parser.c"},
-    branch = "main",
-    generate_requires_npm = false,
-    requires_generate_from_grammar = true,
-  },
-  filetype = "stim",
-}
-
-require('nvim-treesitter.configs').setup({
-  ensure_installed = {
-    -- your other parsers...
-  },
-
-  highlight = {
-    enable = true,
-    additional_vim_regex_highlighting = false,
-  },
-  auto_install = false,  -- Prevent conflicts
-
-    -- Explicitly configure stim
-    parser_install_dir = vim.fn.stdpath("data") .. "/tree-sitter-parsers",
-  })
+-- local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
+--
+-- parser_config.stim = {
+--   install_info = {
+--     url = "/Users/andrewpatterson/stim-tresitter/", -- Local path to this repository
+--     files = {"src/parser.c"},
+--     branch = "main",
+--     generate_requires_npm = false,
+--     requires_generate_from_grammar = true,
+--   },
+--   filetype = "stim",
+-- }
+--
+-- require('nvim-treesitter.configs').setup({
+--   ensure_installed = {
+--     -- your other parsers...
+--   },
+--
+--   highlight = {
+--     enable = true,
+--     additional_vim_regex_highlighting = false,
+--   },
+--   auto_install = false,  -- Prevent conflicts
+--
+--     -- Explicitly configure stim
+--     parser_install_dir = vim.fn.stdpath("data") .. "/tree-sitter-parsers",
+--   })
 
   -- Force reload stim filetype
 vim.treesitter.language.register("stim", "stim")
@@ -98,9 +98,9 @@ vim.filetype.add({
     ['*.stim'] = 'stim',
   },
 })
-package.path = package.path .. ';/Users/andrewpatterson/stim-treesitter/?.lua'
+-- package.path = package.path .. ';/Users/andrewpatterson/stim-treesitter/?.lua'
 -- local ok, result = pcall(function()
---       return loadfile('/Users/andrewpatterson/stim-tresitter/stim-treesitter.lua')
+--       return loadfile('/Users/andrewpatterson/stim-tresitter/lua/stim-treesitter.lua')
 --   end)
 --
 --   if ok and result then
@@ -129,11 +129,11 @@ package.path = package.path .. ';/Users/andrewpatterson/stim-treesitter/?.lua'
 --   end
 -- Load and setup the plugin
 -- require('stim-treesitter').setup()
-local stim_treesitter_module = loadfile('/Users/andrewpatterson/stim-tresitter/stim-treesitter.lua')()
-  stim_treesitter_module.setup()
-
--- Optional: Set up keybindings
-vim.keymap.set('n', '<leader>si', ':StimInfoTS<CR>', { desc = 'Stim: Show measurement info' })
+-- local stim_treesitter_module = loadfile('/Users/andrewpatterson/stim-tresitter/lua/stim-treesitter.lua')()
+--   stim_treesitter_module.setup()
+--
+-- -- Optional: Set up keybindings
+-- vim.keymap.set('n', '<leader>si', ':StimInfoTS<CR>', { desc = 'Stim: Show measurement info' })
 
 -- Notebook utilities
 vim.api.nvim_create_user_command("NewNotebook", function(opts)
