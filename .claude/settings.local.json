@@ -4,7 +4,10 @@
       "Bash(poetry env info:*)",
       "Bash(poetry env list:*)",
       "Bash(uvx --help:*)",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Bash(nvim:*)",
+      "Bash(git add:*)",
+      "Bash(git push)"
     ],
     "deny": [],
     "ask": []
