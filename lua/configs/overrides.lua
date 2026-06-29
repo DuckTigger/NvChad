@@ -27,6 +27,7 @@ M.mason = {
     -- web dev stuff
     "css-lsp",
     "html-lsp",
+    "json-lsp",
     "typescript-language-server",
     "deno",
     "prettier",
