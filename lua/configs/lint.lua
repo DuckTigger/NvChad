@@ -81,6 +81,9 @@ M.setup = function()
 	vim.api.nvim_create_autocmd("CursorHold", {
 		group = lint_augroup,
 		callback = function()
+			if not vim.diagnostic.is_enabled() then
+				return
+			end
 			vim.diagnostic.open_float(nil, {
 				focusable = false,
 				scope = "line",

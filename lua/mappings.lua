@@ -21,6 +21,10 @@ map("n", "<leader>dtm",  ":lua require'neotest'.run.run({strategy = 'dap'})<CR>"
 map("n", "<leader>ts",  ":lua require'neotest'.summary.toggle()<CR>", {desc = "Neotest: Toggle test summary" })
 map("n", "<leader>tp",  ":lua require'neotest'.output_panel.toggle()<CR>", {desc = "Neotest: Toggle output panel" })
 
+map("n", "<leader>tz", function()
+  require("configs.diagnostics").zen_toggle()
+end, {desc = "Toggle Zen Mode (hide diagnostics)" })
+
 map("n", "<leader>ac",  ":CopilotChat ", {desc = "CopilotChat - Prompt" })
 map("n", "<leader>ae",  ":CopilotChatExplain<CR>", {desc = "CopilotChat - Explain code" })
 map("n", "<leader>at",  ":CopilotChatTests<CR>", {desc = "CopilotChat - Generate tests" })
